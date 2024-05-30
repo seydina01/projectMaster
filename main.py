@@ -98,13 +98,20 @@ class Projet:
 
     def generer_rapport_performance(self):
         get_membres = "\n".join([f"- {membre.nom} ({membre.role})" for membre in self.equipe.obtenir_membres()])
+        get_taches = "\n".join([f"- {tache.nom} ({tache.date_debut} a {tache.date_fin}), Responsable:  {tache.responsable.nom} Statut: {tache.statut}" for tache in self.taches])
+
 
         return (
             f"Rapport de performance du projet {self.nom}\n"
             f"Version : {self.version}\n"
             f"Dates : {self.date_debut} à {self.date_fin}\n"
             f"Budget : {self.budget} FCFA\n"
-            f"Équipe :\n{get_membres}"
+            f"Équipe :\n{get_membres}\n"
+            f"Taches :\n{get_taches}\n"
+            f"jalons :\n{get_membres}\n"
+            f"Risques :\n{get_membres}\n"
+            f"Chemin Critiques :\n{get_membres}"
+
         )
 
     def calculer_chemin_critique(self):
@@ -119,8 +126,13 @@ if __name__ == "__main__":
 
     projet1 = Projet("Gestion des vacataires", "projet visant  a faciliter la gestion des vacataires au sein de l'UFR SET", '2024-05-01', '2024-06-01')
     projet2 = Projet("Gestion des PFC", "projet visant  a faciliter la gestion des projetsde fin de cycle", '2024-05-01', '2024-06-01')
+    tache1 = Tache("Analyse des besoins", "Analyse des besoins du projet", '2024-05-01', '2024-05-09' , membre3, "En cours")
+    tache2 = Tache("developpement", "Analyse devops", '2024-06-01', '2024-06-01' , membre4, "En cours")
 
     projet1.ajouter_membre_equipe(membre3)
     projet1.ajouter_membre_equipe(membre4)
+    projet1.ajouter_tache(tache1)
+    projet1.ajouter_tache(tache2)
+
     print(projet1.generer_rapport_performance())
 
