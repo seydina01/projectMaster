@@ -49,8 +49,29 @@ class Changement:
         self.description = description
         self.version = version
         self.date = date
+#l'interface
+class NotificationStrategy:
+    def envoyer(self, message: str, destinataire: Membre):
+        pass
+class EmailNotificationStrategy(NotificationStrategy):
+    def envoyer(self, message: str, destinataire: Membre):
+        print(f"Notification envoyée à {destinataire.nom} par email: {message}")
+
+class SMSNotificationStrategy(NotificationStrategy):
+    def envoyer(self, message: str, destinataire: Membre):
+        print(f"Notification envoyée à {destinataire.nom} par SMS: {message}")
+
+class NotificationContext:
+    def __init__(self, strategy: NotificationStrategy):
+        self.strategy = strategy
+
+    def notifier(self, message: str, destinataires: [Membre]):
+        for destinataire in destinataires:
+            self.strategy.envoyer(message, destinataire)
+
 
 class Projet:
+
     def __init__(self, nom: str, description: str, date_debut: datetime, date_fin: datetime):
         self.nom = nom
         self.description = description
@@ -65,6 +86,9 @@ class Projet:
         self.changements = []
         self.chemin_critique = []
         self.notification_context = None
+    #cette fonction me permettre plus tard de definir quel type sera letypedu message(email ou sms )
+    def set_notification_strategy(self, strategy: NotificationStrategy):
+        self.notification_context = NotificationContext(strategy)
 
     def ajouter_tache(self, tache: Tache):
         self.taches.append(tache)
@@ -98,13 +122,13 @@ class Projet:
 
     def generer_rapport_performance(self):
         get_membres = "\n".join([f"- {membre.nom} ({membre.role})" for membre in self.equipe.obtenir_membres()])
-        get_taches = "\n".join([f"- {tache.nom} ({tache.date_debut} a {tache.date_fin}), Responsable:  {tache.responsable.nom} Statut: {tache.statut}" for tache in self.taches])
+        get_taches = "\n".join([ f"- {tache.nom} ({tache.date_debut} a {tache.date_fin}), Responsable:  {tache.responsable.nom} Statut: {tache.statut}" for tache in self.taches])
         get_jalons = "\n".join([f"- {jalon.nom} ( {jalon.date})" for jalon in self.jalons])
         get_risques = "\n".join([f"- {risque.description} ( Probabilité:{risque.probabilite}, Impact: {risque.impact})" for risque in self.risques])
         get_cheminCritiques = "\n".join([f"-{tache.nom} ({tache.date_debut} a {tache.date_fin}) " for tache in self.taches])
-        
 
         return (
+            '##################################################################\n'
             f"Rapport de performance du projet {self.nom}\n"
             f"Version : {self.version}\n"
             f"Dates : {self.date_debut} à {self.date_fin}\n"
@@ -116,39 +140,35 @@ class Projet:
             f"Chemin Critiques :\n{get_cheminCritiques}"
 
         )
-
     def calculer_chemin_critique(self):
         pass
 
+
 if __name__ == "__main__":
-    membre1 = Membre("seydina Diagne", "Développeur")
-    membre2 = Membre("latyr Diedhiou", "Manager")
+    projet = Projet("Nouveau Produit", "Développement d'un nouveau produit", datetime(2024, 1, 1),datetime(2024, 12, 31))
+    membre1 = Membre("Latyr omar", "Chef de projet")
+    membre2 = Membre("Mamy watta", "Développeur")
 
-    membre3 = Membre("Mamadou Ba", "Développeur")
-    membre4 = Membre("Ameth Gaye", "Manager")
+    projet.ajouter_membre_equipe(membre1)
+    projet.ajouter_membre_equipe(membre2)
 
-    projet1 = Projet("Gestion des vacataires", "projet visant  a faciliter la gestion des vacataires au sein de l'UFR SET", '2024-05-01', '2024-06-01')
-    projet2 = Projet("Gestion des PFC", "projet visant  a faciliter la gestion des projetsde fin de cycle", '2024-05-01', '2024-06-01')
-    tache1 = Tache("Analyse des besoins", "Analyse des besoins du projet", '2024-05-01', '2024-06-01' , membre3, "terminé")
-    tache2 = Tache("developpement", "Analyse devops", '2024-05-01', '2024-05-25' , membre4, "En cours")
-    jalon1 = Jalon("phase 1 terminé",'2024-06-01')
-    risque1 = Risque("Retard de livraison",'0.3','Elevé')
-    
-    
-    
-    projet1.ajouter_membre_equipe(membre3)
-    projet1.ajouter_membre_equipe(membre4)
-    projet1.ajouter_tache(tache1)
-    projet1.ajouter_tache(tache2)
-    projet1.ajouter_jalon(jalon1)
-    projet1.ajouter_risque(risque1)
-    projet1.calculer_chemin_critique()
-    
-    """
-    les deux print permettent de voir pour chaque project de quoi il est associer
-    on peut utilisé un seul project pour tester
-    print(projet2.generer_rapport_performance())
-    """
-    print(projet1.generer_rapport_performance())
+    tache1 = Tache("Analyse des besoins", "Description de la tâche", datetime(2024, 1, 1), datetime(2024, 1, 31), membre1, "Terminée")
+    tache2 = Tache("Développement", "Description de la tâche", datetime(2024, 2, 1), datetime(2024, 6, 30), membre2,"Non démarrée")
+
+    projet.ajouter_tache(tache1)
+    projet.ajouter_tache(tache2)
+
+    projet.definir_budget(50000)
+
+    risque1 = Risque("Retard de livraison", 0.3, "Élevé")
+    projet.ajouter_risque(risque1)
+
+    jalon1 = Jalon("Phase 1 terminée", datetime(2024, 1, 31))
+    projet.ajouter_jalon(jalon1)
+
+    projet.set_notification_strategy(SMSNotificationStrategy())
+
+    projet.enregistrer_changement("Changement de la portée du projet")
+    print(projet.generer_rapport_performance())
     
 
