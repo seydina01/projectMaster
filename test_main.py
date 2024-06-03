@@ -10,7 +10,7 @@ from main import (
 
 class TestProjectManager(unittest.TestCase):
     def setUp(self):
-        self.membre1 = Membre("Mamadou Ba", "Développeur")
+        self.membre1 = Membre("Mamie Awa WATT", "Développeuse")
         self.membre2 = Membre("Mouhamed Gaye", "Manager")
         self.membre3 = Membre("Seydina Issa Diagne", "Développeur")
         self.membre4 = Membre("Latyr Omar Diedhiou", "Manager")
@@ -77,5 +77,4 @@ class TestProjectManager(unittest.TestCase):
         self.assertIn("Taches :", rapport)
 
     if __name__ == "__main__":
-
         unittest.main()
