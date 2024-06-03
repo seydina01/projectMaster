@@ -76,3 +76,6 @@ class TestProjectManager(unittest.TestCase):
         self.assertIn("Équipe :", rapport)
         self.assertIn("Taches :", rapport)
 
+    if __name__ == "__main__":
+
+        unittest.main()

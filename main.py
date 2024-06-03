@@ -2,14 +2,14 @@ from datetime import datetime
 from typing import List
 
 
-# la classe membre representant une personne
+""" la classe membre representant une personne """
 class Membre:
     def __init__(self, nom: str, role: str):
         self.nom = nom
         self.role = role
 
 
-# la classe equipe qui est composée de zéro ou plusieurs membres
+""" la classe equipe qui est composée de zéro ou plusieurs membres"""
 class Equipe:
     def __init__(self):
         self.membres = []
@@ -115,7 +115,7 @@ class Projet:
         self.version = 1
         self.changements :List = []
         self.chemin_critique :List = []
-        self.notification_context :NotificationContext = None
+        self.notification_context :NotificationContext = NotificationContext(EmailNotificationStrategy())
 
     def set_notification_strategy(self, strategy: NotificationStrategy):
         self.notification_context = NotificationContext(strategy)
