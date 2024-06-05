@@ -108,7 +108,7 @@ class NotificationStrategy:
 class EmailNotificationStrategy(NotificationStrategy):
     def envoyer(self, message: str, destinataire: Membre):
         """Envoie une notification par email à un destinataire."""
-        print(f"Notification envoyée à " f"{destinataire.nom} par email: {message}")
+        print(f"Notification envoyée à " f"" f"{destinataire.nom} par email: {message}")
 
 
 """Stratégie de notification par SMS."""
@@ -117,7 +117,7 @@ class EmailNotificationStrategy(NotificationStrategy):
 class SMSNotificationStrategy(NotificationStrategy):
     def envoyer(self, message: str, destinataire: Membre):
         """Envoie une notification par sms à un destinataire."""
-        print(f"Notification envoyée à" f" {destinataire.nom} par SMS: {message}")
+        print(f"Notification envoyée à" f" " f"{destinataire.nom} par SMS: {message}")
 
 
 class PushNotificationStrategy(NotificationStrategy):
@@ -169,7 +169,7 @@ class Projet:
         """Ajoute une nouvelle tâche au projet et notifie l'équipe"""
         self.taches.append(tache)
         self.notifier(
-            f"Nouvelle tâche ajoutée: {tache.nom}", self.equipe.obtenir_membres()
+            f"Nouvelle tâche ajoutée:" f" {tache.nom}", self.equipe.obtenir_membres()
         )
 
     def ajouter_membre_equipe(self, membre: Membre):
