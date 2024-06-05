@@ -1,6 +1,5 @@
 import unittest
 from main import (
-    Equipe,
     Membre,
     Tache,
     Jalon,
@@ -21,8 +20,9 @@ class TestProjectManager(unittest.TestCase):
         self.projet1.equipe.ajouter_membre(self.membre1)
         self.projet1.equipe.ajouter_membre(self.membre2)
 
+
     def test_ajouter_membre(self):
-        nouveau_membre = Membre("Khady niang", "Developpeuse")
+        nouveau_membre = Membre("Khady Niang", "Développeuse")
         self.projet1.equipe.ajouter_membre(nouveau_membre)
         self.assertIn(nouveau_membre, self.projet1.equipe.obtenir_membres())
 
@@ -62,6 +62,5 @@ class TestProjectManager(unittest.TestCase):
         self.assertIn("Équipe :", rapport)
         self.assertIn("Taches :", rapport)
 
-
-if __name__ == "_main_":
+if __name__ == "__main__":
     unittest.main()
