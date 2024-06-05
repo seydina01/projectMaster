@@ -12,33 +12,19 @@ class TestProjectManager(unittest.TestCase):
     def setUp(self):
         self.membre1 = Membre("Mamie Awa WATT", "Développeuse")
         self.membre2 = Membre("Mouhamed Gaye", "Manager")
-        self.membre3 = Membre("Seydina Issa Diagne", "Développeur")
-        self.membre4 = Membre("Latyr Omar Diedhiou", "Manager")
 
-        self.equipe = Equipe()
-        self.equipe.ajouter_membre(self.membre1)
-        self.equipe.ajouter_membre(self.membre2)
-        self.equipe.ajouter_membre(self.membre3)
-        self.equipe.ajouter_membre(self.membre4)
-
-        self.tache1 = Tache("Analyse des besoins", "Analyse des besoins du projet", '2024-05-01', '2024-05-09', self.membre3, "Terminé")
-        self.tache2 = Tache("Développement", "Analyse DevOps", '2024-06-01', '2024-06-01', self.membre4, "En cours")
+        self.tache1 = Tache("Analyse des besoins", "Analyse des besoins du projet", '2024-05-01', '2024-05-09', self.membre1, "Terminé")
+        self.tache2 = Tache("Développement", "Analyse DevOps", '2024-06-01', '2024-06-01', self.membre2, "En cours")
 
         self.projet1 = Projet("Gestion des vacataires", "Projet visant à faciliter la gestion des vacataires au sein de l'UFR SET", '2024-05-01', '2024-06-01')
-        self.projet2 = Projet("Gestion des PFC", "Projet visant à faciliter la gestion des projets de fin de cycle", '2024-05-01', '2024-06-01')
 
-        self.projet1.ajouter_membre_equipe(self.membre1)
-        self.projet1.ajouter_membre_equipe(self.membre2)
-        self.projet1.ajouter_tache(self.tache1)
-        self.projet1.ajouter_tache(self.tache2)
-
-        self.projet2.ajouter_membre_equipe(self.membre3)
-        self.projet2.ajouter_membre_equipe(self.membre4)
+        self.projet1.equipe.ajouter_membre(self.membre1)
+        self.projet1.equipe.ajouter_membre(self.membre2)
 
     def test_ajouter_membre(self):
-        nouveau_membre = Membre("Mami Awa Watt", "Developpeuse")
-        self.equipe.ajouter_membre(nouveau_membre)
-        self.assertIn(nouveau_membre, self.equipe.obtenir_membres())
+        nouveau_membre = Membre("Khady niang", "Developpeuse")
+        self.projet1.equipe.ajouter_membre(nouveau_membre)
+        self.assertIn(nouveau_membre, self.projet1.equipe.obtenir_membres())
 
     def test_ajouter_tache(self):
         tache3 = Tache("authentification", "Implémentation du module d'authentification", '2024-05-03', '2024-05-30', self.membre1, "Non commencé")
@@ -76,5 +62,6 @@ class TestProjectManager(unittest.TestCase):
         self.assertIn("Équipe :", rapport)
         self.assertIn("Taches :", rapport)
 
-    if __name__ == "__main__":
-        unittest.main()
+
+if __name__ == "_main_":
+    unittest.main()
